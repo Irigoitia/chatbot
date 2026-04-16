@@ -1,7 +1,5 @@
 venv/
 venv38/
-.rasa/
-models/
 __pycache__/
 *.pyc
 .env
