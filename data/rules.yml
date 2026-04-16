@@ -2,12 +2,12 @@ version: "3.1"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
+- rule: despedirse cuando el usuario se despide
   steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  - intent: despedida
+  - action: utter_despedida
 
-- rule: Say 'I am a bot' anytime the user challenges
+- rule: decir que es un bot cuando el usuario lo pregunta
   steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+  - intent: reto_bot
+  - action: utter_soy_bot
