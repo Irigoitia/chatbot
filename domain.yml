@@ -8,7 +8,21 @@ intents:
   - animo_excelente
   - animo_triste
   - reto_bot
+  - consultar_dolar
 
+entities:
+  - tipo_dolar
+
+slots:
+  tipo_dolar:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: tipo_dolar
+
+actions:
+  - action_consultar_dolar
+  
 responses:
   utter_saludo:
   - text: "¡Hola! ¿Cómo estás?"

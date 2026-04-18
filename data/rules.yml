@@ -4,10 +4,15 @@ rules:
 
 - rule: despedirse cuando el usuario se despide
   steps:
-  - intent: despedida
-  - action: utter_despedida
+    - intent: despedida
+    - action: utter_despedida
 
 - rule: decir que es un bot cuando el usuario lo pregunta
   steps:
-  - intent: reto_bot
-  - action: utter_soy_bot
+    - intent: bot_challenge
+    - action: utter_soy_bot
+
+- rule: consultar cotización del dólar
+  steps:
+    - intent: consultar_dolar
+    - action: action_consultar_dolar

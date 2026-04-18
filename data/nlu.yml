@@ -30,61 +30,44 @@ nlu:
     - nos vemos más tarde
     - cuídate
 
-- intent: afirmar
+- intent: consultar_dolar
   examples: |
-    - sí
-    - claro
-    - por supuesto
-    - eso suena bien
-    - correcto
-    - exacto
-    - efectivamente
-    - de acuerdo
+    - cuanto está el dólar
+    - cotización del dólar
+    - quiero saber el dólar blue
+    - cuanto está el blue
+    - decime el dólar oficial
+    - quiero el dólar bolsa
+    - cuanto está el dólar mep
+    - precio del contado con liqui
+    - cuanto está el ccl
+    - valor del dólar cripto
+    - quiero ver el dólar tarjeta
+    - cuanto está el dólar mayorista
+    - mostrame todos los dólares
+    - decime todos los tipos de dólar
+    - cuanto sale el dólar hoy
+    - a cuánto está el dólar blue hoy
+    - precio del dólar oficial
+    - valor del dólar mep
+    - cotización del dólar ccl
+    - quiero consultar el dólar tarjeta
 
-- intent: denegar
+- lookup: tipo_dolar
   examples: |
-    - no
-    - nunca
-    - no lo creo
-    - no me gusta eso
-    - de ninguna manera
-    - en realidad no
-    - para nada
+    - oficial
+    - blue
+    - bolsa
+    - mep
+    - ccl
+    - contado con liqui
+    - contadoconliqui
+    - tarjeta
+    - mayorista
+    - cripto
+    - todos
 
-- intent: animo_excelente
-  examples: |
-    - perfecto
-    - genial
-    - increíble
-    - me siento de maravilla
-    - maravilloso
-    - me siento muy bien
-    - estoy genial
-    - estoy increíble
-    - voy a salvar el mundo
-    - súper emocionado
-    - extremadamente bien
-    - todo perfecto
-    - muy bien
-    - excelente
-
-- intent: animo_triste
-  examples: |
-    - mi día fue horrible
-    - estoy triste
-    - no me siento muy bien
-    - estoy decepcionado
-    - súper triste
-    - estoy tan triste
-    - triste
-    - muy triste
-    - infeliz
-    - nada bien
-    - no muy bien
-    - extremadamente triste
-    - bajoneado
-
-- intent: reto_bot
+- intent: bot_challenge
   examples: |
     - ¿eres un bot?
     - ¿eres un humano?
