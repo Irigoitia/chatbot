@@ -74,3 +74,30 @@ nlu:
     - ¿estoy hablando con un robot?
     - ¿estoy hablando con una persona?
     - ¿eres una inteligencia artificial?
+
+- synonym: blue
+  examples: |
+    - blu
+    - blur
+    - el blue
+    - dolar blue
+    - blut
+    - azul
+
+- synonym: oficial
+  examples: |
+    - oficiale
+    - el oficial
+    - oficila
+    - ofi 
+
+- synonym: tarjeta
+  examples: |
+    - card
+    - tarjet
+
+- synonym: mayorista
+  examples: |
+    - mayo
+    - mayoris
+    - mayorist

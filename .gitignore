@@ -3,3 +3,6 @@ venv38/
 __pycache__/
 *.pyc
 .env
+.rasa/
+models/
+.venv/

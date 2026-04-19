@@ -1,5 +1,6 @@
 import requests
 from typing import Any, Text, Dict, List
+from thefuzz import process
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -34,34 +35,31 @@ class ActionConsultarDolar(Action):
         return equivalencias.get(texto, texto)
 
     def obtener_tipo_dolar(self, tracker: Tracker) -> str:
+        # 1. Primero intentamos con la entidad que detectó Rasa (NLU)
         entidad = next(tracker.get_latest_entity_values("tipo_dolar"), None)
 
         if entidad:
             return self.normalizar_tipo_dolar(entidad)
-
+        
+        # 2. Si no hay entidad, usamos Fuzzy Matching sobre el texto completo
         texto = tracker.latest_message.get("text", "").lower()
 
-        palabras_clave = {
-            "oficial": "oficial",
-            "blue": "blue",
-            "bolsa": "bolsa",
-            "mep": "mep",
-            "ccl": "contadoconliqui",
-            "contado con liqui": "contadoconliqui",
-            "contado con liquidacion": "contadoconliqui",
-            "contado con liquidación": "contadoconliqui",
-            "tarjeta": "tarjeta",
-            "mayorista": "mayorista",
-            "cripto": "cripto",
-            "todos": "todos",
-            "tipos de dolar": "todos",
-            "tipos de dólar": "todos"
-        }
-
-        for clave, valor in palabras_clave.items():
-            if clave in texto:
-                return valor
-
+        # Opciones válidas (agregué 'ccl' que es común)
+        opciones = ["oficial", "blue", "bolsa", "mep", "ccl", "contadoconliqui", "tarjeta", "mayorista", "cripto", "todos"]
+    
+        # extractOne busca la mejor coincidencia
+        resultado = process.extractOne(texto, opciones)
+    
+        if resultado:
+            palabra, puntaje = resultado
+            # Si la similitud es mayor al 70%, lo damos por válido
+            if puntaje > 70:
+                # Normalizamos los casos que la API espera distinto
+                if palabra == "mep": return "bolsa"
+                if palabra == "ccl": return "contadoconliqui"
+                return palabra
+        
+        # Este return debe estar alineado con el 'if entidad' inicial
         return ""
 
     def formatear_un_dolar(self, data: Dict[Text, Any]) -> str:

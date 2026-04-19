@@ -1,6 +1,0 @@
-[
-  {
-    "name": "tipo_dolar",
-    "pattern": "(\\boficial\\b|\\bblue\\b|\\bbolsa\\b|\\bmep\\b|\\bccl\\b|\\bcontado\\ con\\ liqui\\b|\\bcontadoconliqui\\b|\\btarjeta\\b|\\bmayorista\\b|\\bcripto\\b|\\btodos\\b)"
-  }
-]
