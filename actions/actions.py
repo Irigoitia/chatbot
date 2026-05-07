@@ -4,7 +4,48 @@ from thefuzz import process
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.events import Restarted
+from datetime import datetime, timedelta
+from rasa_sdk.events import ReminderScheduled
 
+class ActionTimeout(Action):
+    def name(self) -> Text:
+        return "action_timeout"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+
+        dispatcher.utter_message(
+            text="Como no recibí respuesta durante un minuto, finalizo la conversación."
+        )
+
+        return [Restarted()]
+
+class ActionProgramarTimeout(Action):
+    def name(self) -> Text:
+        return "action_programar_timeout"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+
+        fecha_timeout = datetime.now() + timedelta(seconds=10)
+
+        reminder = ReminderScheduled(
+            intent_name="timeout",
+            trigger_date_time=fecha_timeout,
+            name="timeout_un_minuto",
+            kill_on_user_message=True
+        )
+
+        return [reminder]
 
 class ActionConsultarDolar(Action):
     def name(self) -> Text:

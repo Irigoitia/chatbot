@@ -9,6 +9,7 @@ intents:
   - animo_triste
   - reto_bot
   - consultar_dolar
+  - timeout
 
 entities:
   - tipo_dolar
@@ -22,6 +23,8 @@ slots:
 
 actions:
   - action_consultar_dolar
+  - action_timeout
+  - action_programar_timeout
   
 responses:
   utter_saludo:
@@ -42,6 +45,9 @@ responses:
 
   utter_soy_bot:
   - text: "Soy un bot, programado con Rasa."
+
+  utter_timeout:
+  - text: "Parece que te has ido, si quieres volver a hablar conmigo solo tienes que saludarme de nuevo."
 
 session_config:
   session_expiration_time: 1

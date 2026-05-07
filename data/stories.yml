@@ -6,6 +6,7 @@ stories:
   steps:
   - intent: saludo
   - action: utter_saludo
+  - action: action_programar_timeout
   - intent: animo_excelente
   - action: utter_feliz
 
@@ -13,6 +14,7 @@ stories:
   steps:
   - intent: saludo
   - action: utter_saludo
+  - action: action_programar_timeout
   - intent: animo_triste
   - action: utter_animar
   - action: utter_ayudo
@@ -23,6 +25,7 @@ stories:
   steps:
   - intent: saludo
   - action: utter_saludo
+  - action: action_programar_timeout
   - intent: animo_triste
   - action: utter_animar
   - action: utter_ayudo
