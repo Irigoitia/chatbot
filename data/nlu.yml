@@ -1,0 +1,215 @@
+version: "3.1"
+
+nlu:
+- intent: saludo
+  examples: |
+    - hola
+    - hey
+    - buenas
+    - hola de nuevo
+    - buenos días
+    - buenas noches
+    - qué tal
+    - hola amigo
+    - buen día
+    - buenas tardes
+    - holas
+
+- intent: despedida
+  examples: |
+    - adiós
+    - hasta luego
+    - nos vemos
+    - que tengas buenas noches
+    - chau
+    - que tengas un buen día
+    - hasta pronto
+    - adiós adiós
+    - nos vemos más tarde
+    - cuídate
+    - hablamos luego
+    - me voy
+
+
+
+- intent: chit_chat
+  examples: |
+    - cómo estás
+    - qué hacés
+    - contame algo
+    - tenés nombre
+    - quién te creó
+    - te gusta el fútbol
+    - cuál es tu comida favorita
+    - estás aburrido
+    - qué hora es
+    - te gusta programar
+    - sabés cocinar
+    - qué música escuchás
+    - tenés amigos
+    - cuál es tu color favorito
+    - mirás películas
+    - te gusta messi
+    - qué opinás de la inteligencia artificial
+    - cómo funciona un bot
+    - qué podés hacer
+    - contame un chiste
+
+- intent: afirmar
+  examples: |
+    - sí
+    - claro
+    - exacto
+    - correcto
+
+- intent: denegar
+  examples: |
+    - no
+    - para nada
+    - negativo
+
+- intent: animo_excelente
+  examples: |
+    - estoy genial
+    - muy bien
+    - excelente
+    - feliz
+    - bien
+    - genial
+    - estoy bien
+    - todo perfecto
+    - fantastico
+    - contento
+    - muy contento
+    - joya
+    - espetacular
+    - estoy excelente
+    - ando muy bien
+    - re bien
+    - barbaro
+
+- intent: animo_triste
+  examples: |
+    - estoy triste
+    - me siento mal
+    - tuve un mal día
+    - estoy deprimido
+    - horrible
+    - deprimido
+    - no estoy bien
+    - angustiado 
+    - cansado
+    - pesimo
+    - tuve un mal dia
+    - desanimado
+    - deprimido
+    - bajon
+
+- intent: bot_challenge
+  examples: |
+    - ¿eres un bot?
+    - ¿eres un humano?
+    - ¿estoy hablando con un robot?
+    - ¿estoy hablando con una persona?
+    - ¿eres una inteligencia artificial?
+    - ¿Que eres?
+    - que eres
+    - sos una persona?
+    - eres un robot
+    - eres un chatbot
+    - eres una IA
+#--------------------------------------------------------------
+- intent: derivar_a_una_persona
+  examples: |
+    - quiero comunicarme con una persona
+    - quiero hablar con una persona
+    - necesito una persona
+    - puedes dervarme con una persona
+    - hay una persona a cargo
+    - necesito hablar con una persona
+    - quiero hablar con un humano
+    - pasame con un operador
+    - quiero atención humana
+    - necesito ayuda humana
+    - me comunicas con alguien
+    - quiero soporte humano
+    - necesito un operador
+
+- lookup: derivar_a_una_persona_2
+  examples: |
+    - personal
+    - persona
+    - humano
+    - secretario
+    - director
+    - responsable a cargo
+
+
+#-----------------------------------------------------------
+- intent: consultar_dolar
+  examples: |
+    - cuanto está el dólar
+    - cotización del dólar
+    - quiero saber el dólar blue
+    - cuanto está el blue
+    - decime el dólar oficial
+    - quiero el dólar bolsa
+    - cuanto está el dólar mep
+    - precio del contado con liqui
+    - cuanto está el ccl
+    - valor del dólar cripto
+    - quiero ver el dólar tarjeta
+    - cuanto está el dólar mayorista
+    - mostrame todos los dólares
+    - decime todos los tipos de dólar
+    - cuanto sale el dólar hoy
+    - a cuánto está el dólar blue hoy
+    - precio del dólar oficial
+    - valor del dólar mep
+    - cotización del dólar ccl
+    - quiero consultar el dólar tarjeta
+
+- lookup: tipo_dolar
+  examples: |
+    - oficial
+    - blue
+    - bolsa
+    - mep
+    - ccl
+    - contado con liqui
+    - contadoconliqui
+    - tarjeta
+    - mayorista
+    - cripto
+    - todos
+
+
+
+- synonym: blue
+  examples: |
+    - blu
+    - blur
+    - el blue
+    - dolar blue
+    - blut
+    - azul
+
+- synonym: oficial
+  examples: |
+    - oficiale
+    - el oficial
+    - oficila
+    - ofi 
+
+- synonym: tarjeta
+  examples: |
+    - card
+    - tarjet
+
+- synonym: mayorista
+  examples: |
+    - mayo
+    - mayoris
+    - mayorist
+
+#---------------------------------------------------    

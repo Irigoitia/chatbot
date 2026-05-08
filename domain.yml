@@ -1,0 +1,99 @@
+version: "3.1"
+
+intents:
+  - saludo
+  - despedida
+  #- afirmar
+  - denegar
+  #- animo_excelente
+  #- animo_triste
+  - bot_challenge
+  - consultar_dolar
+  - chit_chat
+  - derivar_a_una_persona
+
+entities:
+  - tipo_dolar
+
+slots:
+ #contador general
+ contador_fuera_contexto:
+    type: float
+    initial_value: 0
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+
+ tipo_dolar:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: tipo_dolar
+
+ #Para recordar en que chat esta
+ modo_chat:
+    type: text
+    initial_value: "operador"
+    influence_conversation: true
+    mappings:
+      - type: custom
+
+
+
+
+actions:
+  - action_consultar_dolar
+  - action_fallback_contador
+  - action_router_conversacion
+
+responses:
+  utter_saludo:
+  - text: "[BotOperador] ¡Hola! ¿En que puedo ayudarte?"
+
+  utter_animar:
+  - text: "Aquí tienes algo para animarte:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_ayudo:
+  - text: "¿Te sirvió de ayuda?"
+
+  utter_feliz:
+  - text: "¡Genial, continúa así!"
+
+  utter_despedida:
+  - text: "[BotOperador] ¡Adiós! Espero que tengas un buen día."
+
+  utter_soy_bot:
+  - text: "[BotOperador] Soy un bot, programado con Rasa."
+
+
+  utter_chit_chat:
+    - text: "[ChitChat] Soy un chatbot especializado en cotizaciones 💵"
+    - text: "[ChitChat] Puedo ayudarte principalmente con información del dólar."
+    - text: "[ChitChat] Todavía estoy aprendiendo otras conversaciones 😄"
+
+
+  utter_default:
+    - text: "No entendí eso 😅. Puedo ayudarte con cotizaciones del dólar."
+
+  utter_derivar_a_una_persona:
+    - text: "Contacto 1: Armando Maradona
+            Cel: 343-2961986
+            Correo: mundial.mexico@gmail.com
+           
+           Contacto 2: Lionel Messi
+            Cel: 343-18122022
+            Correo: mundial.catar@gmail.com
+            "
+  
+
+
+
+
+session_config:
+  session_expiration_time: 1
+  carry_over_slots_to_new_session: true
+
+
+

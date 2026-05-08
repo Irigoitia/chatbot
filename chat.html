@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chatbot</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #chat-container {
+      width: 420px;
+      height: 620px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    #chat-header {
+      background: #075e54;
+      color: #fff;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #chat-header .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #25d366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    #chat-header .info h2 { font-size: 15px; font-weight: 600; }
+    #chat-header .info span { font-size: 12px; opacity: 0.8; }
+
+    /* ── Timer bar ── */
+    #timer-bar {
+      background: #e8f5e9;
+      padding: 6px 18px;
+      font-size: 12px;
+      color: #2e7d32;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid #c8e6c9;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    #timer-bar.warning { background: #fff3e0; color: #e65100; border-bottom-color: #ffcc80; }
+    #timer-bar.danger  { background: #ffebee; color: #b71c1c; border-bottom-color: #ef9a9a; }
+
+    #timer-bar .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #2e7d32;
+      flex-shrink: 0;
+    }
+    #timer-bar.warning .dot { background: #e65100; }
+    #timer-bar.danger  .dot { background: #b71c1c; animation: blink 0.6s infinite; }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    /* ── Mensajes ── */
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #ece5dd;
+    }
+
+    .msg {
+      max-width: 75%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.45;
+      word-break: break-word;
+      position: relative;
+    }
+
+    .msg.bot {
+      background: #fff;
+      align-self: flex-start;
+      border-top-left-radius: 0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .msg.user {
+      background: #dcf8c6;
+      align-self: flex-end;
+      border-top-right-radius: 0;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .msg.system {
+      background: #fff9c4;
+      align-self: center;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #5d4037;
+      text-align: center;
+      border: 1px solid #f9a825;
+      max-width: 90%;
+    }
+
+    /* ── Etiqueta de remitente del bot ── */
+    .msg .sender-label {
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .sender-label.BotDolar    { color: #1565c0; }
+    .sender-label.BotOperador { color: #6a1b9a; }
+    .sender-label.ChitChat    { color: #2e7d32; }
+    .sender-label.Bot         { color: #37474f; }
+
+    .msg .time {
+      font-size: 10px;
+      color: #999;
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    .msg img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* ── Typing indicator ── */
+    #typing {
+      display: none;
+      align-self: flex-start;
+      background: #fff;
+      border-radius: 8px;
+      border-top-left-radius: 0;
+      padding: 10px 14px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    #typing span {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: #aaa;
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: bounce 1.2s infinite;
+    }
+    #typing span:nth-child(2) { animation-delay: 0.2s; }
+    #typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); }
+      40%           { transform: translateY(-6px); }
+    }
+
+    /* ── Input ── */
+    #input-area {
+      display: flex;
+      padding: 10px 12px;
+      gap: 8px;
+      border-top: 1px solid #e0e0e0;
+      background: #f0f2f5;
+    }
+
+    #user-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 14px;
+      outline: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    #user-input:disabled { background: #e0e0e0; color: #999; cursor: not-allowed; }
+
+    #send-btn {
+      width: 42px; height: 42px;
+      border: none;
+      border-radius: 50%;
+      background: #075e54;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    #send-btn:hover    { background: #128c7e; }
+    #send-btn:disabled { background: #aaa; cursor: not-allowed; }
+
+    /* ── Overlay sesión cerrada ── */
+    #session-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      z-index: 10;
+    }
+    #session-overlay .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 28px 32px;
+      text-align: center;
+      max-width: 300px;
+    }
+    #session-overlay .card .icon { font-size: 40px; margin-bottom: 10px; }
+    #session-overlay .card h3    { font-size: 16px; margin-bottom: 8px; color: #333; }
+    #session-overlay .card p     { font-size: 13px; color: #666; margin-bottom: 20px; }
+    #session-overlay .card button {
+      background: #075e54;
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #session-overlay .card button:hover { background: #128c7e; }
+  </style>
+</head>
+<body>
+
+<div id="chat-container" style="position:relative;">
+
+  <!-- Header -->
+  <div id="chat-header">
+    <div class="avatar">🤖</div>
+    <div class="info">
+      <h2>Bot Asistente</h2>
+      <span>En línea</span>
+    </div>
+  </div>
+
+  <!-- Barra de timer -->
+  <div id="timer-bar">
+    <div class="dot"></div>
+    <span id="timer-text">Sesión activa</span>
+  </div>
+
+  <!-- Mensajes -->
+  <div id="messages">
+    <div class="msg bot">
+      <div class="sender-label Bot">Bot</div>
+      <p style="white-space:pre-wrap">¡Hola! Soy tu asistente. ¿En qué te puedo ayudar?</p>
+      <div class="time" id="start-time"></div>
+    </div>
+    <div id="typing">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div id="input-area">
+    <input id="user-input" type="text" placeholder="Escribí un mensaje..." autocomplete="off" />
+    <button id="send-btn">➤</button>
+  </div>
+
+  <!-- Overlay sesión expirada -->
+  <div id="session-overlay">
+    <div class="card">
+      <div class="icon">⏱️</div>
+      <h3>Sesión finalizada</h3>
+      <p>La conversación se cerró por inactividad. Podés iniciar una nueva cuando quieras.</p>
+      <button onclick="reiniciarChat()">Nueva conversación</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ══════════════════════════════════════════
+  //  CONFIGURACIÓN — ajustá estos valores
+  // ══════════════════════════════════════════
+  const RASA_URL      = "http://localhost:5005/webhooks/rest/webhook";
+  const SENDER_ID     = "usuario_" + Math.random().toString(36).slice(2, 9);
+
+  const TIMEOUT_AVISO  = 60;   // segundos hasta el primer aviso
+  const TIMEOUT_CIERRE = 60;   // segundos adicionales hasta el cierre definitivo
+  // ══════════════════════════════════════════
+
+  // ── Mapa de prefijos (igual que en chat.py) ──────────────
+  // Clave: prefijo que viene en r.text  →  Valor: nombre a mostrar
+  const PREFIJOS = {
+    "[BotDolar]":    "BotDolar",
+    "[BotOperador]": "BotOperador",
+    "[ChitChat]":    "ChitChat",
+  };
+  const TAG_SESSION_END = "[SESSION_END]";
+  // ─────────────────────────────────────────────────────────
+
+  const messagesEl = document.getElementById("messages");
+  const inputEl    = document.getElementById("user-input");
+  const sendBtn    = document.getElementById("send-btn");
+  const timerBar   = document.getElementById("timer-bar");
+  const timerText  = document.getElementById("timer-text");
+  const typingEl   = document.getElementById("typing");
+  const overlay    = document.getElementById("session-overlay");
+
+  let timerAviso  = null;
+  let timerCierre = null;
+  let countdown   = null;
+  let segundosRestantes = TIMEOUT_AVISO;
+  let fase = "activo"; // "activo" | "aviso" | "cerrado"
+
+  document.getElementById("start-time").textContent = horaActual();
+
+  // ── Utilidades ────────────────────────────────────────────
+  function horaActual() {
+    return new Date().toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function scrollAbajo() {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  /**
+   * Parsea el texto que devuelve Rasa y retorna:
+   *   { sender: "BotDolar" | "BotOperador" | "ChitChat" | "Bot", texto: "...", sessionEnd: bool }
+   *
+   * Lógica idéntica al chat.py:
+   *   - Si contiene [SESSION_END] → sessionEnd = true y se limpia el tag
+   *   - Si empieza con [BotDolar] / [BotOperador] / [ChitChat] → se extrae el prefijo
+   *   - De lo contrario → sender = "Bot"
+   */
+  function parsearRespuesta(texto) {
+    let sessionEnd = false;
+
+    // 1. Detectar [SESSION_END]
+    if (texto.includes(TAG_SESSION_END)) {
+      sessionEnd = true;
+      texto = texto.replace(TAG_SESSION_END, "").trim();
+    }
+
+    // 2. Detectar prefijos de remitente
+    for (const [tag, nombre] of Object.entries(PREFIJOS)) {
+      if (texto.startsWith(tag)) {
+        texto = texto.slice(tag.length).trim();
+        return { sender: nombre, texto, sessionEnd };
+      }
+    }
+
+    return { sender: "Bot", texto, sessionEnd };
+  }
+
+  /**
+   * Agrega un mensaje al chat.
+   * @param {string|null} texto  - Texto del mensaje (null si es solo imagen)
+   * @param {"bot"|"user"|"system"} tipo
+   * @param {string|null} imagen - URL de imagen opcional
+   * @param {string} sender      - Etiqueta de remitente para mensajes bot
+   */
+  function agregarMensaje(texto, tipo, imagen = null, sender = "Bot") {
+    typingEl.remove();
+
+    const div = document.createElement("div");
+    div.className = "msg " + tipo;
+
+    // Etiqueta de remitente solo para mensajes del bot
+    if (tipo === "bot" && sender) {
+      const label = document.createElement("div");
+      label.className = "sender-label " + sender;
+      label.textContent = sender;
+      div.appendChild(label);
+    }
+
+    if (texto) {
+      const p = document.createElement("p");
+      p.style.whiteSpace = "pre-wrap";
+      p.textContent = texto;
+      div.appendChild(p);
+    }
+
+    if (imagen) {
+      const img = document.createElement("img");
+      img.src = imagen;
+      img.alt = "imagen";
+      div.appendChild(img);
+    }
+
+    const time = document.createElement("div");
+    time.className = "time";
+    time.textContent = horaActual();
+    div.appendChild(time);
+
+    messagesEl.appendChild(div);
+    messagesEl.appendChild(typingEl);
+    scrollAbajo();
+  }
+
+  // ── Timer ─────────────────────────────────────────────────
+  function limpiarTimers() {
+    clearTimeout(timerAviso);
+    clearTimeout(timerCierre);
+    clearInterval(countdown);
+  }
+
+  function actualizarBarraTimer(segs, estadoFase) {
+    timerBar.className = "";
+    if (estadoFase === "aviso")  timerBar.classList.add("warning");
+    if (estadoFase === "danger") timerBar.classList.add("danger");
+
+    if (segs > 0) {
+      timerText.textContent = estadoFase === "activo"
+        ? `Sesión activa · cierra en ${segs}s sin actividad`
+        : `⚠️ ¿Seguís ahí? Cerrando en ${segs}s...`;
+    }
+  }
+
+  function iniciarContadorRegresivo(duracion, estadoFase) {
+    clearInterval(countdown);
+    segundosRestantes = duracion;
+    actualizarBarraTimer(segundosRestantes, estadoFase);
+
+    countdown = setInterval(() => {
+      segundosRestantes--;
+      actualizarBarraTimer(segundosRestantes, estadoFase);
+      if (segundosRestantes <= 0) clearInterval(countdown);
+    }, 1000);
+  }
+
+  function iniciarTimers() {
+    limpiarTimers();
+    fase = "activo";
+    iniciarContadorRegresivo(TIMEOUT_AVISO, "activo");
+
+    timerAviso = setTimeout(async () => {
+      fase = "aviso";
+      await enviarABot("/noinput");
+      iniciarContadorRegresivo(TIMEOUT_CIERRE, "aviso");
+
+      timerCierre = setTimeout(async () => {
+        fase = "cerrado";
+        clearInterval(countdown);
+        timerText.textContent = "Sesión cerrada por inactividad";
+        timerBar.className = "danger";
+        await enviarABot("/noinput");
+        bloquearChat();
+        overlay.style.display = "flex";
+      }, TIMEOUT_CIERRE * 1000);
+
+    }, TIMEOUT_AVISO * 1000);
+  }
+
+  function bloquearChat() {
+    inputEl.disabled = true;
+    sendBtn.disabled = true;
+    inputEl.placeholder = "Sesión cerrada";
+  }
+
+  function desbloquearChat() {
+    inputEl.disabled = false;
+    sendBtn.disabled = false;
+    inputEl.placeholder = "Escribí un mensaje...";
+    inputEl.focus();
+  }
+
+  // ── Comunicación con Rasa ─────────────────────────────────
+  async function enviarABot(texto) {
+    try {
+      const res = await fetch(RASA_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sender: SENDER_ID, message: texto })
+      });
+
+      const respuestas = await res.json();
+      typingEl.style.display = "none";
+
+      for (const r of respuestas) {
+
+        if (r.text) {
+          const { sender, texto: textoLimpio, sessionEnd } = parsearRespuesta(r.text);
+
+          // Mostrar el mensaje (incluso si hay SESSION_END, igual se muestra el texto)
+          if (textoLimpio) {
+            agregarMensaje(textoLimpio, "bot", null, sender);
+          }
+
+          // Si el bot marcó fin de sesión → cerrar igual que en chat.py
+          if (sessionEnd) {
+            agregarMensaje("⛔ Sesión cerrada por el servidor.", "system");
+            fase = "cerrado";
+            limpiarTimers();
+            clearInterval(countdown);
+            timerText.textContent = "Sesión cerrada";
+            timerBar.className = "danger";
+            bloquearChat();
+            overlay.style.display = "flex";
+            return; // no procesar más respuestas
+          }
+        }
+
+        if (r.image) {
+          agregarMensaje(null, "bot", r.image, "Bot");
+        }
+      }
+
+    } catch (err) {
+      typingEl.style.display = "none";
+      agregarMensaje("⚠️ No se pudo conectar con el servidor.", "system");
+    }
+  }
+
+  async function enviarMensaje() {
+    const texto = inputEl.value.trim();
+    if (!texto || fase === "cerrado") return;
+
+    agregarMensaje(texto, "user");
+    inputEl.value = "";
+
+    iniciarTimers(); // reiniciar timer por actividad
+
+    typingEl.style.display = "flex";
+    scrollAbajo();
+
+    await enviarABot(texto);
+  }
+
+  // ── Reinicio de chat ──────────────────────────────────────
+  function reiniciarChat() {
+    overlay.style.display = "none";
+    messagesEl.innerHTML = "";
+    messagesEl.appendChild(typingEl);
+
+    agregarMensaje("¡Hola! Soy tu asistente. ¿En qué te puedo ayudar?", "bot", null, "Bot");
+    desbloquearChat();
+
+    fase = "activo";
+    timerBar.className = "";
+    iniciarTimers();
+  }
+
+  // ── Eventos ───────────────────────────────────────────────
+  sendBtn.addEventListener("click", enviarMensaje);
+  inputEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") enviarMensaje();
+  });
+
+  // ── Arranque ──────────────────────────────────────────────
+  iniciarTimers();
+</script>
+
+</body>
+</html>
