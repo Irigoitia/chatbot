@@ -8,4 +8,7 @@ stories:
   - intent: saludo
   - action: utter_saludo
 
-
+- story: solicitar llamada
+  steps:
+      - intent: solicitar_llamada
+      - action: utter_solicitar_numero

@@ -86,7 +86,14 @@ responses:
             Cel: 343-18122022
             Correo: mundial.catar@gmail.com
             "
-  
+  utter_solicitar_numero:
+    - text: "Para atenderte por llamada telefónica, por favor indícame tu número telefónico."
+
+  utter_debolver_saludos_gracias:
+    - text: "Estoy contento de poderte ayudarte! Si tienes otra duda no dudes en preguntar."
+
+
+
 
 
 

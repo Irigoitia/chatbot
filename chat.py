@@ -7,7 +7,7 @@ RASA_URL = "http://localhost:5005/webhooks/rest/webhook"
 timer = None
 
 
-def cerrar_por_timeout():
+def cerrar_por_timeout():#<---
     print("\n⏰ La sesión expiró por inactividad.")
     os._exit(0)
 

@@ -143,7 +143,31 @@ nlu:
     - secretario
     - director
     - responsable a cargo
+- intent: solicitar_llamada
+  examples: |
+      - Quiero ser atendido por llamada
+      - Necesito que me llamen
+      - Quiero que me den información por teléfono
+      - Quiero hablar que alguin me llame por telefono
+      - quiero que me llamen por telefono
+      - puedo darte mi numero para que me llamen
+      - llamenme a mi telefono
+      - necesito que me llamen por telefono
 
+- intent: debolver_saludo_gracias
+  examples: |
+    - gracias 
+    - muchas gracias
+    - gracias por su atencion
+    - excelente servicio
+    - buena respuesta
+    - me sirvio su informacion
+    - gracias por su ayuda
+    - me sirve la informacion
+    - muy buena la data
+    - muy buena la informacion
+    - muy buena la info
+    - gracias por su servicion
 
 #-----------------------------------------------------------
 - intent: consultar_dolar
