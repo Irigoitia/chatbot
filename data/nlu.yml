@@ -194,6 +194,75 @@ nlu:
     - secretario
     - director
     - responsable a cargo
+    - asesor
+    - consultor
+    - especialista
+    - representante
+    - ejecutivo
+    - supervisor
+    - gerente
+    - coordinador
+    - operador
+    - soporte
+    - atención
+    - ayuda
+    - asistencia
+
+- intent: comprar_dolar
+  examples: |
+    - quiero comprar dólares
+    - quiero comprar dólar blue
+    - necesito comprar dólares hoy
+    - cómo compro dólares
+    - quiero comprar dólar oficial
+    - quiero comprar dólar tarjeta
+    - comprar dólar mep
+    - quiero comprar dólar al precio actual
+    - me interesa comprar dólares
+    - cuánto cuesta comprar dólar
+    - estoy buscando comprar dólares
+    - quiero una cotización para comprar dólar
+    - quiero comprar dólares al contado
+    - quiero comprar dólar cripto
+
+- intent: vender_dolar
+  examples: |
+    - quiero vender dólares
+    - necesito vender dólares
+    - quiero vender dólar blue
+    - vender dólares hoy
+    - cómo vendo dólares
+    - quiero vender dólar oficial
+    - quiero vender dólar tarjeta
+    - vender dólar mep
+    - me gustaría vender dólares
+    - cuánto pagan por dólar
+    - quisiera vender mis dólares
+    - vender dólares al contado
+    - oferta para vender dólares
+    - quiero vender dólar cripto
+
+- intent: comprar_dolar_persona
+  examples: |
+    - quiero comprar dólares y hablar con una persona
+    - me comunicas con alguien para comprar dólares
+    - necesito comprar dólares con atención humana
+    - quiero hablar con un asesor para comprar dólares
+    - quiero comprar dólar blue con un operador
+    - quiero comprar dólares pero necesito hablar con una persona
+    - pasame con alguien para comprar dólares
+    - quiero comprar dólar y hablar con un humano
+
+- intent: vender_dolar_persona
+  examples: |
+    - quiero vender dólares y hablar con una persona
+    - me comunicas con alguien para vender dólares
+    - necesito vender dólares con atención humana
+    - quiero hablar con un asesor para vender dólares
+    - quiero vender dólar blue con un operador
+    - quiero vender dólares pero necesito hablar con una persona
+    - pasame con alguien para vender dólares
+    - quiero vender dólar y hablar con un humano
 
 
 #-----------------------------------------------------------

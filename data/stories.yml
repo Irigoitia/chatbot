@@ -7,4 +7,46 @@ stories:
   - intent: saludo
   - action: utter_saludo
 
+- story: consulta cotización del dólar
+  steps:
+  - intent: consultar_dolar
+  - action: action_consultar_dolar
+
+- story: compra de dólares
+  steps:
+  - intent: comprar_dolar
+  - action: action_consultar_dolar
+
+- story: venta de dólares
+  steps:
+  - intent: vender_dolar
+  - action: action_consultar_dolar
+
+- story: compra de dólares con atención humana
+  steps:
+  - intent: comprar_dolar_persona
+  - action: action_consultar_dolar
+  - action: utter_derivar_a_una_persona
+
+- story: venta de dólares con atención humana
+  steps:
+  - intent: vender_dolar_persona
+  - action: action_consultar_dolar
+  - action: utter_derivar_a_una_persona
+
+- story: solicitar atención humana
+  steps:
+  - intent: derivar_a_una_persona
+  - action: utter_derivar_a_una_persona
+
+- story: derivar urgente
+  steps:
+  - intent: derivar_urgente
+  - action: utter_derivar_urgente
+
+- story: conversación chit chat
+  steps:
+  - intent: chit_chat
+  - action: utter_chit_chat
+
 

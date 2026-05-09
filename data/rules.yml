@@ -63,18 +63,13 @@ rules:
 - rule: derivar urgente
   steps:
      - intent: derivar_urgente
+     - action: utter_derivar_urgente
+
+- rule: derivar urgente
+  steps:
+     - intent: derivar_urgente
      - action: utter_derivar_urgente     
 
 - rule: router conversación
   steps:
     - action: action_router_conversacion
-
-- rule: regla para llamada
-  steps:
-      - intent: solicitar_llamada
-      - action: utter_solicitar_numero    
-
-- rule: debolver el saludo al agradecimiento 
-  steps:
-      - intent: debolver_saludo_gracias
-      - action: utter_debolver_saludos_gracias

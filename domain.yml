@@ -83,14 +83,10 @@ responses:
     - text: "No entendí eso 😅. Puedo ayudarte con cotizaciones del dólar."
 
   utter_derivar_a_una_persona:
-    - text: "Contacto 1: Armando Maradona
-            Cel: 343-2961986
-            Correo: mundial.mexico@gmail.com
-           
-           Contacto 2: Lionel Messi
-            Cel: 343-18122022
-            Correo: mundial.catar@gmail.com
-            "
+    - text: "Te comparto los datos de contacto de nuestros asesores:\n\nContacto 1: Armando Maradona\nCel: 343-2961986\nCorreo: mundial.mexico@gmail.com\n\nContacto 2: Lionel Messi\nCel: 343-18122022\nCorreo: mundial.catar@gmail.com\n\n¡No dudes en contactarlos para cualquier consulta!"
+
+  utter_derivar_urgente:
+    - text: "Entiendo que esto es urgente. Te comparto inmediatamente los datos de contacto de nuestros asesores especializados:\n\nContacto 1: Armando Maradona\nCel: 343-2961986\nCorreo: mundial.mexico@gmail.com\n\nContacto 2: Lionel Messi\nCel: 343-18122022\nCorreo: mundial.catar@gmail.com\n\nPor favor, contactalos directamente para resolver tu situación lo antes posible."
   
 
 
