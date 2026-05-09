@@ -163,7 +163,7 @@ class ActionConsultarDolar(Action):
 
         if not tipo_dolar:
             dispatcher.utter_message(
-                text="[BotDolar] Para ayudarte necesito saber qué tipo de dólar querés consultar. Podés pedirme información del dólar oficial, blue, bolsa (MEP), CCL, tarjeta, mayorista o cripto.\n\n" +
+                text="Para ayudarte necesito saber qué tipo de dólar querés consultar. Podés pedirme información del dólar oficial, blue, bolsa (MEP), CCL, tarjeta, mayorista o cripto.\n\n" +
                      "Si preferís, escribí algo como:\n" +
                      "- 'cotización del dólar blue'\n" +
                      "- 'precio del dólar oficial'\n" +
@@ -176,7 +176,7 @@ class ActionConsultarDolar(Action):
 
         if not url:
             dispatcher.utter_message(
-                text="[BotDolar] Ese tipo de dólar no lo reconozco todavía."
+                text="Ese tipo de dólar no lo reconozco todavía."
             )
             return []
 
@@ -191,16 +191,16 @@ class ActionConsultarDolar(Action):
             else:
                 mensaje = self.formatear_un_dolar_operacion(data, intent_name)
 
-            dispatcher.utter_message(text=f"[BotDolar] {mensaje}")
+            dispatcher.utter_message(text=f"{mensaje}")
             #Errores relacionados con la API o la conexión a internet
         except requests.exceptions.RequestException:
             dispatcher.utter_message(
-                text="[BotDolar] No pude consultar la cotización en este momento. Probá de nuevo en un rato."
+                text="No pude consultar la cotización en este momento. Probá de nuevo en un rato."
             )
             #Errores relaciones con la pregunta del usuario o el procesamiento de la respuesta
         except Exception:
             dispatcher.utter_message(
-                text="[BotDolar] No pude consultar la cotización en este momento. Probá de nuevo en un rato."
+                text="No pude consultar la cotización en este momento. Probá de nuevo en un rato."
             )
 
         return [ SlotSet("modo_chat", "bot_dolar"),
@@ -234,11 +234,11 @@ class ActionFallbackContador(Action):
             if contador == 1:
 
                 dispatcher.utter_message(
-                    text="[BotDolar] ⚠️ Eso no parece relacionado al dólar."
+                    text="⚠️ Eso no parece relacionado al dólar."
                 )
 
                 dispatcher.utter_message(
-                    text="[BotDolar] 🔄 Volviendo al operador..."
+                    text="🔄 Volviendo al operador..."
                 )
 
                 return [
@@ -249,7 +249,7 @@ class ActionFallbackContador(Action):
             elif contador == 2:
 
                 dispatcher.utter_message(
-                    text="[BotDolar] 😄 Pasando al modo conversación casual."
+                    text="😄 Pasando al modo conversación casual."
                 )
 
                 return [
@@ -260,7 +260,7 @@ class ActionFallbackContador(Action):
             else:
 
                 dispatcher.utter_message(
-                    text="[BotDolar] ❌ Conversación finalizada."
+                    text="❌ Conversación finalizada."
                 )
 
                 return [
@@ -277,8 +277,8 @@ class ActionFallbackContador(Action):
             if contador >= 3:
 
                 dispatcher.utter_message(
-                    #text="[ChitChat] 👋 Finalizando sesión."
-                    text="[SESSION_END] [ChitChat] 👋 Finalizando sesión."
+                    #text="👋 Finalizando sesión."
+                    text="[SESSION_END] 👋 Finalizando sesión."
                 )
 
                 return [
@@ -288,7 +288,7 @@ class ActionFallbackContador(Action):
 
          
             dispatcher.utter_message(
-                text="[ChitChat] 😄 Seguimos conversando..."
+                text="😄 Seguimos conversando..."
             )
             return [
                 SlotSet("contador_fuera_contexto", contador)
@@ -299,12 +299,11 @@ class ActionFallbackContador(Action):
         # =========================
 
         elif modo == "operador":
-            dispatcher.utter_message(text=f"[DEBUG] contador={contador}")
             # Primer y segundo fallback
             if contador < 3:
 
                 dispatcher.utter_message(
-                    text="[BotOperador] 🤖 No entendí eso."
+                    text="No tengo informacion suficiente para ayudarte con eso."
                 )
 
                 return [
@@ -327,7 +326,7 @@ class ActionFallbackContador(Action):
             elif contador >= 5:
 
                 dispatcher.utter_message(
-                    text="[BotOperador] Conversación finalizada."
+                    text="Conversación finalizada."
                 )
 
                 return [

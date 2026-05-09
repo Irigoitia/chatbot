@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chatbot</title>
+  <title>Dolarix</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -139,7 +139,7 @@
     .sender-label.BotDolar    { color: #1565c0; }
     .sender-label.BotOperador { color: #6a1b9a; }
     .sender-label.ChitChat    { color: #2e7d32; }
-    .sender-label.Bot         { color: #37474f; }
+    .sender-label.Dolarix { color: #37474f; }
 
     .msg .time {
       font-size: 10px;
@@ -261,7 +261,7 @@
   <div id="chat-header">
     <div class="avatar">🤖</div>
     <div class="info">
-      <h2>Bot Asistente</h2>
+      <h2>Dolarix</h2>
       <span>En línea</span>
     </div>
   </div>
@@ -275,8 +275,8 @@
   <!-- Mensajes -->
   <div id="messages">
     <div class="msg bot">
-      <div class="sender-label Bot">Bot</div>
-      <p style="white-space:pre-wrap">¡Hola! Soy tu asistente. ¿En qué te puedo ayudar?</p>
+      <div class="sender-label Dolarix">Dolarix</div>
+      <p style="white-space:pre-wrap">¡Hola! Soy Dolarix. ¿En qué te puedo ayudar?</p>
       <div class="time" id="start-time"></div>
     </div>
     <div id="typing">
@@ -316,9 +316,7 @@
   // ── Mapa de prefijos (igual que en chat.py) ──────────────
   // Clave: prefijo que viene en r.text  →  Valor: nombre a mostrar
   const PREFIJOS = {
-    "[BotDolar]":    "BotDolar",
-    "[BotOperador]": "BotOperador",
-    "[ChitChat]":    "ChitChat",
+    "[Dolarix]": "Dolarix",
   };
   const TAG_SESSION_END = "[SESSION_END]";
   // ─────────────────────────────────────────────────────────
@@ -350,12 +348,12 @@
 
   /**
    * Parsea el texto que devuelve Rasa y retorna:
-   *   { sender: "BotDolar" | "BotOperador" | "ChitChat" | "Bot", texto: "...", sessionEnd: bool }
+   *   { sender: "Dolarix", texto: "...", sessionEnd: bool }
    *
-   * Lógica idéntica al chat.py:
+   * Lógica:
    *   - Si contiene [SESSION_END] → sessionEnd = true y se limpia el tag
-   *   - Si empieza con [BotDolar] / [BotOperador] / [ChitChat] → se extrae el prefijo
-   *   - De lo contrario → sender = "Bot"
+   *   - Si empieza con [Dolarix] → se extrae el prefijo
+   *   - De lo contrario → sender = "Dolarix"
    */
   function parsearRespuesta(texto) {
     let sessionEnd = false;
@@ -374,7 +372,7 @@
       }
     }
 
-    return { sender: "Bot", texto, sessionEnd };
+    return { sender: "Dolarix", texto, sessionEnd };
   }
 
   /**
@@ -384,7 +382,7 @@
    * @param {string|null} imagen - URL de imagen opcional
    * @param {string} sender      - Etiqueta de remitente para mensajes bot
    */
-  function agregarMensaje(texto, tipo, imagen = null, sender = "Bot") {
+  function agregarMensaje(texto, tipo, imagen = null, sender = "Dolarix") {
     typingEl.remove();
 
     const div = document.createElement("div");
@@ -526,7 +524,7 @@
         }
 
         if (r.image) {
-          agregarMensaje(null, "bot", r.image, "Bot");
+          agregarMensaje(null, "bot", r.image, "Dolarix");
         }
       }
 
@@ -557,7 +555,7 @@
     messagesEl.innerHTML = "";
     messagesEl.appendChild(typingEl);
 
-    agregarMensaje("¡Hola! Soy tu asistente. ¿En qué te puedo ayudar?", "bot", null, "Bot");
+    agregarMensaje("¡Hola! Soy Dolarix. ¿En qué te puedo ayudar?", "bot", null, "Dolarix");
     desbloquearChat();
 
     fase = "activo";

@@ -54,7 +54,7 @@ actions:
 
 responses:
   utter_saludo:
-  - text: "[BotOperador] ¡Hola! ¿En que puedo ayudarte?"
+  - text: "¡Hola! ¿En que puedo ayudarte?"
 
   utter_animar:
   - text: "Aquí tienes algo para animarte:"
@@ -67,16 +67,16 @@ responses:
   - text: "¡Genial, continúa así!"
 
   utter_despedida:
-  - text: "[BotOperador] ¡Adiós! Espero que tengas un buen día."
+  - text: "¡Adiós! Espero que tengas un buen día."
 
   utter_soy_bot:
-  - text: "[BotOperador] Soy un bot, programado con Rasa."
+  - text: "Soy un bot, programado con Rasa."
 
 
   utter_chit_chat:
-    - text: "[ChitChat] Soy un chatbot especializado en cotizaciones 💵"
-    - text: "[ChitChat] Puedo ayudarte principalmente con información del dólar."
-    - text: "[ChitChat] Todavía estoy aprendiendo otras conversaciones 😄"
+    - text: "Soy un chatbot especializado en cotizaciones 💵"
+    - text: "Puedo ayudarte principalmente con información del dólar."
+    - text: "Todavía estoy aprendiendo otras conversaciones 😄"
 
 
   utter_default:
