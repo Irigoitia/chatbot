@@ -12,15 +12,37 @@ rules:
     - intent: bot_challenge
     - action: utter_soy_bot
 
+- rule: saludar al usuario
+  steps:
+    - intent: saludo
+    - action: utter_saludo
+
 - rule: consultar cotización del dólar
   steps:
     - intent: consultar_dolar
     - action: action_consultar_dolar
 
-#- rule: saludar al user
- # steps:
-  #  - intent: saludo
-   # - action: utter_saludo
+- rule: comprar dólares
+  steps:
+    - intent: comprar_dolar
+    - action: action_consultar_dolar
+
+- rule: vender dólares
+  steps:
+    - intent: vender_dolar
+    - action: action_consultar_dolar
+
+- rule: comprar dólares con atención humana
+  steps:
+    - intent: comprar_dolar_persona
+    - action: action_consultar_dolar
+    - action: utter_derivar_a_una_persona
+
+- rule: vender dólares con atención humana
+  steps:
+    - intent: vender_dolar_persona
+    - action: action_consultar_dolar
+    - action: utter_derivar_a_una_persona
 
 - rule: responder chit chat
   steps:
@@ -36,7 +58,12 @@ rules:
 - rule: contactar con una persona
   steps:
      - intent: derivar_a_una_persona
-     - action: utter_derivar_a_una_persona     
+     - action: utter_derivar_a_una_persona
+
+- rule: derivar urgente
+  steps:
+     - intent: derivar_urgente
+     - action: utter_derivar_urgente     
 
 - rule: router conversación
   steps:

@@ -24,3 +24,9 @@ venv\Scripts\activate
 Instalar dependencias:
 
 pip install -r requirements.txt
+
+Para que funcione hay que correr estos 2 comandas en terminales diferentes
+
+-rasa run actions
+
+-rasa run --enable-api --cors "*"

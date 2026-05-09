@@ -35,32 +35,43 @@ class ActionConsultarDolar(Action):
 
         return equivalencias.get(texto, texto)
 
-    def obtener_tipo_dolar(self, tracker: Tracker) -> str:
+    def obtener_tipo_dolar(self, tracker: Tracker, intent_name: Text) -> str:
         # 1. Primero intentamos con la entidad que detectó Rasa (NLU)
         entidad = next(tracker.get_latest_entity_values("tipo_dolar"), None)
 
         if entidad:
             return self.normalizar_tipo_dolar(entidad)
-        
-        # 2. Si no hay entidad, usamos Fuzzy Matching sobre el texto completo
+
         texto = tracker.latest_message.get("text", "").lower()
 
-        # Opciones válidas (agregué 'ccl' que es común)
+        # 2. Detectar directamente tipos de dólar mencionados en la frase
+        opciones_texto = ["oficial", "blue", "bolsa", "mep", "ccl", "contado con liqui", "contado con liquidacion", "contadoconliqui", "tarjeta", "mayorista", "cripto", "todos"]
+        for opcion in opciones_texto:
+            if opcion in texto:
+                if opcion == "mep":
+                    return "bolsa"
+                if opcion in ["ccl", "contado con liqui", "contado con liquidacion", "contadoconliqui"]:
+                    return "contadoconliqui"
+                return opcion
+
+        # 3. Si es una consulta genérica de cotización sin tipo específico, devolvemos todos
+        if intent_name == "consultar_dolar":
+            if any(palabra in texto for palabra in ["cotiz", "cotización", "cotizaciones", "cotizar", "cotizame", "mostrar cotiz", "mostrar cotizaciones"]):
+                return "todos"
+
+        # 4. Si no hay entidad ni coincidencia directa, usamos Fuzzy Matching sobre el texto completo
         opciones = ["oficial", "blue", "bolsa", "mep", "ccl", "contadoconliqui", "tarjeta", "mayorista", "cripto", "todos"]
-    
-        # extractOne busca la mejor coincidencia
         resultado = process.extractOne(texto, opciones)
-    
+
         if resultado:
             palabra, puntaje = resultado
-            # Si la similitud es mayor al 70%, lo damos por válido
             if puntaje > 70:
-                # Normalizamos los casos que la API espera distinto
-                if palabra == "mep": return "bolsa"
-                if palabra == "ccl": return "contadoconliqui"
+                if palabra == "mep":
+                    return "bolsa"
+                if palabra == "ccl":
+                    return "contadoconliqui"
                 return palabra
-        
-        # Este return debe estar alineado con el 'if entidad' inicial
+
         return ""
 
     def formatear_un_dolar(self, data: Dict[Text, Any]) -> str:
@@ -76,9 +87,24 @@ class ActionConsultarDolar(Action):
              f"Actualizado: {fecha}"
         )
 
-    def formatear_todos(self, lista):
+    def formatear_todos(self, lista, intent: Text = ""):
+        if intent in ["comprar_dolar", "comprar_dolar_persona"]:
+            lineas = ["Cotizaciones de venta del dólar:\n"]
+            for dolar in lista:
+                nombre = dolar.get("nombre", "Sin nombre")
+                venta = dolar.get("venta", "N/D")
+                lineas.append(f"- {nombre}: venta ${venta}")
+            return "\n".join(lineas)
+
+        if intent in ["vender_dolar", "vender_dolar_persona"]:
+            lineas = ["Cotizaciones de compra del dólar:\n"]
+            for dolar in lista:
+                nombre = dolar.get("nombre", "Sin nombre")
+                compra = dolar.get("compra", "N/D")
+                lineas.append(f"- {nombre}: compra ${compra}")
+            return "\n".join(lineas)
+
         lineas = ["Cotizaciones del dólar:\n"]
-    #FORMATEA LA RESPUESTA PARA MOSTRARLA AL USUARIO
         for dolar in lista:
             nombre = dolar.get("nombre", "Sin nombre")
             compra = dolar.get("compra", "N/D")
@@ -86,6 +112,32 @@ class ActionConsultarDolar(Action):
             lineas.append(f"- {nombre}: compra ${compra} | venta ${venta}")
 
         return "\n".join(lineas)
+
+    def formatear_un_dolar_operacion(self, data: Dict[Text, Any], intent: Text) -> str:
+        nombre = data.get("nombre", "Sin nombre")
+        compra = data.get("compra", "N/D")
+        venta = data.get("venta", "N/D")
+        fecha = data.get("fechaActualizacion", "N/D")
+
+        if intent in ["comprar_dolar", "comprar_dolar_persona"]:
+            return (
+                f"Precio de venta del dólar {nombre}: ${venta}\n"
+                f"Actualizado: {fecha}"
+            )
+
+        if intent in ["vender_dolar", "vender_dolar_persona"]:
+            return (
+                f"Precio de compra del dólar {nombre}: ${compra}\n"
+                f"Actualizado: {fecha}"
+            )
+
+        return (
+             f"Cotización del dólar {nombre}:\n"
+             f"Compra: ${compra}\n"
+             f"Venta: ${venta}\n"
+             f"Actualizado: {fecha}"
+        )
+
     #ACA ES DONDE SE EJECUTA LA ACCION, SE OBTIENE EL TIPO DE DOLAR QUE EL USUARIO QUIERE CONSULTAR, SE HACE LA CONSULTA A LA API
     def run(
         self,
@@ -94,8 +146,9 @@ class ActionConsultarDolar(Action):
         domain: Dict[Text, Any]
     ) -> List[Dict[Text, Any]]:
 
-        tipo_dolar = self.obtener_tipo_dolar(tracker)
-            #ACA LLAMA A LA API PARA OBTENER LOS DATOS DE CADA DOLAR, DEPENDIENDO DEL TIPO QUE EL USUARIO QUIERA CONSULTAR
+        intent_name = tracker.latest_message.get("intent", {}).get("name", "")
+        tipo_dolar = self.obtener_tipo_dolar(tracker, intent_name)
+        #ACA LLAMA A LA API PARA OBTENER LOS DATOS DE CADA DOLAR, DEPENDIENDO DEL TIPO QUE EL USUARIO QUIERA CONSULTAR
         endpoints = {
             "oficial": "https://dolarapi.com/v1/dolares/oficial",
             "blue": "https://dolarapi.com/v1/dolares/blue",
@@ -110,7 +163,12 @@ class ActionConsultarDolar(Action):
 
         if not tipo_dolar:
             dispatcher.utter_message(
-                text="[BotDolar] Podés consultar dólar oficial, blue, bolsa, MEP, CCL, tarjeta, mayorista o cripto."
+                text="[BotDolar] Para ayudarte necesito saber qué tipo de dólar querés consultar. Podés pedirme información del dólar oficial, blue, bolsa (MEP), CCL, tarjeta, mayorista o cripto.\n\n" +
+                     "Si preferís, escribí algo como:\n" +
+                     "- 'cotización del dólar blue'\n" +
+                     "- 'precio del dólar oficial'\n" +
+                     "- 'quiero saber el dólar tarjeta'\n" +
+                     "- 'mostrar cotizaciones'"
             )
             return []
 
@@ -126,13 +184,13 @@ class ActionConsultarDolar(Action):
             response = requests.get(url, timeout=10)
             response.raise_for_status()
             data = response.json()
+            intent_name = tracker.latest_message.get("intent", {}).get("name", "")
 
             if tipo_dolar == "todos":
-                mensaje = self.formatear_todos(data)
+                mensaje = self.formatear_todos(data, intent_name)
             else:
-                mensaje = self.formatear_un_dolar(data)
+                mensaje = self.formatear_un_dolar_operacion(data, intent_name)
 
-            #dispatcher.utter_message(text=mensaje)
             dispatcher.utter_message(text=f"[BotDolar] {mensaje}")
             #Errores relacionados con la API o la conexión a internet
         except requests.exceptions.RequestException:

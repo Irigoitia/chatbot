@@ -124,7 +124,7 @@ nlu:
     - quiero comunicarme con una persona
     - quiero hablar con una persona
     - necesito una persona
-    - puedes dervarme con una persona
+    - puedes derivarme con una persona
     - hay una persona a cargo
     - necesito hablar con una persona
     - quiero hablar con un humano
@@ -134,6 +134,57 @@ nlu:
     - me comunicas con alguien
     - quiero soporte humano
     - necesito un operador
+    - quiero hablar con un asesor
+    - necesito un asesor
+    - pasame con un asesor
+    - quiero un asesor
+    - me derivas con un asesor
+    - necesito hablar con alguien
+    - quiero contacto humano
+    - necesito asistencia personal
+    - quiero hablar con soporte
+    - necesito ayuda inmediata
+    - quiero un representante
+    - necesito un especialista
+    - quiero hablar con un supervisor
+    - necesito un gerente
+    - quiero un ejecutivo
+    - necesito un coordinador
+
+- intent: derivar_urgente
+  examples: |
+    - estoy enojado
+    - estoy molesto
+    - esto es urgente
+    - necesito ayuda urgente
+    - estoy furioso
+    - esto es inaceptable
+    - quiero hablar con alguien ya
+    - necesito resolver esto ahora
+    - estoy indignado
+    - esto es grave
+    - quiero que me atiendan inmediatamente
+    - necesito un supervisor urgente
+    - esto no puede esperar
+    - estoy muy enojado
+    - quiero hablar con un gerente ahora
+    - necesito atención inmediata
+    - esto es una emergencia
+    - estoy frustrado
+    - quiero que me solucionen esto
+    - necesito hablar con alguien superior
+    - estoy harto de esperar
+    - quiero un asesor urgente
+    - necesito ayuda prioritaria
+    - esto es intolerable
+    - quiero hablar con el responsable
+    - necesito un coordinador ahora
+    - estoy muy molesto
+    - quiero atención VIP
+    - necesito un especialista urgente
+    - esto es crítico
+    - quiero hablar con un ejecutivo inmediatamente
+
 
 - lookup: derivar_a_una_persona_2
   examples: |
@@ -143,13 +194,90 @@ nlu:
     - secretario
     - director
     - responsable a cargo
+    - asesor
+    - consultor
+    - especialista
+    - representante
+    - ejecutivo
+    - supervisor
+    - gerente
+    - coordinador
+    - operador
+    - soporte
+    - atención
+    - ayuda
+    - asistencia
 
+- intent: comprar_dolar_persona
+  examples: |
+    - quiero comprar dólares y hablar con una persona
+    - me comunicas con alguien para comprar dólares
+    - necesito comprar dólares con atención humana
+    - quiero hablar con un asesor para comprar dólares
+    - quiero comprar dólar blue con un operador
+    - quiero comprar dólares pero necesito hablar con una persona
+    - pasame con alguien para comprar dólares
+    - quiero comprar dólar y hablar con un humano
+
+- intent: vender_dolar_persona
+  examples: |
+    - quiero vender dólares y hablar con una persona
+    - me comunicas con alguien para vender dólares
+    - necesito vender dólares con atención humana
+    - quiero hablar con un asesor para vender dólares
+    - quiero vender dólar blue con un operador
+    - quiero vender dólares pero necesito hablar con una persona
+    - pasame con alguien para vender dólares
+    - quiero vender dólar y hablar con un humano
+
+- intent: comprar_dolar
+  examples: |
+    - quiero comprar dólares
+    - quiero comprar dólar blue
+    - necesito comprar dólares hoy
+    - cómo compro dólares
+    - quiero comprar dólar oficial
+    - quiero comprar dólar tarjeta
+    - comprar dólar mep
+    - quiero comprar dólar al precio actual
+    - me interesa comprar dólares
+    - cuánto cuesta comprar dólar
+    - estoy buscando comprar dólares
+    - quiero una cotización para comprar dólar
+    - quiero comprar dólares al contado
+    - quiero comprar dólar cripto
+
+- intent: vender_dolar
+  examples: |
+    - quiero vender dólares
+    - necesito vender dólares
+    - quiero vender dólar blue
+    - vender dólares hoy
+    - cómo vendo dólares
+    - quiero vender dólar oficial
+    - quiero vender dólar tarjeta
+    - vender dólar mep
+    - me gustaría vender dólares
+    - cuánto pagan por dólar
+    - quisiera vender mis dólares
+    - vender dólares al contado
+    - oferta para vender dólares
+    - quiero vender dólar cripto
 
 #-----------------------------------------------------------
 - intent: consultar_dolar
   examples: |
     - cuanto está el dólar
     - cotización del dólar
+    - cotizaciones del dólar
+    - cotizar el dólar
+    - quiero cotizar el dólar
+    - dame la cotización del dólar
+    - necesito cotizar dólares
+    - cotiza dólar
+    - cotizame el dólar
+    - quiero la cotización del dólar
+    - cotización y precio del dólar
     - quiero saber el dólar blue
     - cuanto está el blue
     - decime el dólar oficial
@@ -168,6 +296,15 @@ nlu:
     - valor del dólar mep
     - cotización del dólar ccl
     - quiero consultar el dólar tarjeta
+    - cotizacion dolar blue
+    - cotizaciones dolar blue
+    - quiero cotizaciones dolar blue
+    - cotización dólar oficial
+    - cotizaciones del dólar tarjeta
+    - cotizame el dólar mayorista
+    - cotizar dólar cripto
+    - cotización de dólar bolsa
+    - quiero cotizar dólar ccl
 
 - lookup: tipo_dolar
   examples: |
