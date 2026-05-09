@@ -1,4 +1,4 @@
-# PROYECTO CHATBOT - (INSERTAR NOMBRE) (IA)
+# PROYECTO CHATBOT - DOLARIX
 
 Este proyecto implementa un sistema de chatbot conversacional utilizando el framework **Rasa**, diseñado para procesar lenguaje natural (**NLU**) y gestionar el flujo de diálogos mediante aprendizaje automático.
 
